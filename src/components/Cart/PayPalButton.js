@@ -5,8 +5,10 @@ export default class MyApp extends React.Component {
     render() {
 		const onSuccess = (payment) => {
 			// 1, 2, and ... Poof! You made it, everything's fine and dandy!
-            		console.log("Payment successful!", payment);
-            		// You can bind the "payment" object's value to your state or props or whatever here, please see below for sample returned data
+            console.log("Payment successful!", payment);
+            // You can bind the "payment" object's value to your state or props or whatever here, please see below for sample returned data
+            this.props.clearCart();
+            this.props.history.push('/');            
 		}
 
 		const onCancel = (data) => {
@@ -24,11 +26,11 @@ export default class MyApp extends React.Component {
 
 		let env = 'sandbox'; // you can set this string to 'production'
 		let currency = 'USD'; // you can set this string from your props or state  
-		let total = 1;  // this is the total amount (based on currency) to charge
+		// let total = 1;  // this is the total amount (based on currency) to charge
 		// Document on Paypal's currency code: https://developer.paypal.com/docs/classic/api/currency_codes/
 
 		const client = {
-			sandbox:    'YOUR-SANDBOX-APP-ID',
+			sandbox:    process.env.REACT_APP_APP_ID,
 			production: 'YOUR-PRODUCTION-APP-ID',
 		}
 		// In order to get production's app-ID, you will have to send your app to Paypal for approval first
@@ -40,7 +42,7 @@ export default class MyApp extends React.Component {
 
 		// NB. You can also have many Paypal express checkout buttons on page, just pass in the correct amount and they will work!
         return (
-            <PaypalExpressBtn env={env} client={client} currency={currency} total={total} onError={onError} onSuccess={onSuccess} onCancel={onCancel} />
+            <PaypalExpressBtn env={env} client={client} currency={currency} total={this.props.total} onError={onError} onSuccess={onSuccess} onCancel={onCancel} />
         );
     }
 }
