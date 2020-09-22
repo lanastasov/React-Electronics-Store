@@ -1,4 +1,7 @@
 ### React IT Phone Store
+Create a full e-commerce store web site using React.js. Also deployed the site using Netlify.
+### Used: Styled Components, Context API, Proptypes, Cart basics, Details page, Paypal integration, Github && Deploy to Netlify.
+
 
 ### Check out the project live!!!
 [React Phone Store](https://vigilant-lewin-010a6e.netlify.app/)
