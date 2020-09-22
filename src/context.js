@@ -11,7 +11,10 @@ class ProductProvider extends Component {
         detailProduct: detailProduct,
         cart: [],
         modalOpen: false,
-        modalProduct: detailProduct
+        modalProduct: detailProduct,
+        cartSubtotal: 0,
+        cartTax: 0,
+        cartTotal: 0
     };
     componentDidMount(){ 
         this.setProducts();
@@ -49,7 +52,10 @@ class ProductProvider extends Component {
         product.total = price;
         this.setState(() => {
             return {products:tempProducts, cart: [...this.state.cart,product]};
-        },()=>{console.log(this.state)});
+        },()=>{
+            // console.log(this.state)
+            this.addTotals();
+        });
 
     };
     openModal = id => {
@@ -62,6 +68,38 @@ class ProductProvider extends Component {
         this.setState(()=>{
             return {modalOpen:false}
         })
+    };
+    increment = (id) => {
+        console.log("this is increment method");
+    };
+    decrement = (id) => {
+        console.log("this is decrement method");
+    };
+    removeItem = (id) => {
+        console.log("item removed");
+    };
+    clearCart = () => {
+        // console.log("cart was cleared");
+        this.setState(()=>{
+            return {cart:[]}
+        },() => {
+            this.setProducts();
+            this.addTotals();
+        });
+    };
+    addTotals = () => {
+        let subTotal = 0;
+        this.state.cart.map(item => (subTotal += item.total));
+        const tempTax = subTotal * 0.1;
+        const tax = parseFloat(tempTax.toFixed(2));
+        const total = subTotal + tax;
+        this.setState(()=>{
+            return {
+                cartSubtotal:subTotal,
+                cartTax:tax,
+                cartTotal:total
+            }
+        })
     }
     render() {
         return (
@@ -70,7 +108,11 @@ class ProductProvider extends Component {
            handleDetail:this.handleDetail,
            addToCart: this.addToCart,
            openModal:this.openModal,
-           closeModal:this.closeModal
+           closeModal:this.closeModal,
+           increment:this.increment,
+           decrement:this.decrement,
+           removeItem:this.removeItem,
+           clearCart: this.clearCart
            }}>
                {this.props.children}
             
